@@ -11,19 +11,25 @@ if (!fs.existsSync(readmePath)) {
   readmePath = '';
 }
 
+let tmplPath = process.platform === 'win32' ?
+  path.join(__dirname, 'node_modules', 'minami') :
+  './node_modules/minami';
+let cmdPath = process.platform === 'win32' ?
+  path.join(__dirname, 'node_modules', '.bin', 'jsdoc') :
+  './node_modules/.bin/jsdoc';
+
 let args = [
   projectPath,
   readmePath,
   '-r',
-  '-t', './node_modules/minami',
+  '-t', tmplPath,
   '-d', path.join(projectPath, 'doc')
 ]
 
 child_process.exec(
-  "./node_modules/.bin/jsdoc " + args.join(' '),
+  cmdPath + " " + args.join(' '),
   function (err, stdout, stderr) {
     if(err || stderr)
       return console.log(err || stderr)
     console.log('Document created!')
   });
-
